@@ -12,10 +12,9 @@ class ApiTokenServiceProvider extends ServiceProvider
             __DIR__.'/ApiToken.php' => app_path('ApiToken.php'),
         ]);
         $this->publishes([
-            __DIR__.'/migrations/2018_04_18_090739_create_api_tokens_table.php' =>
+            __DIR__.'/../migrations/2018_04_18_090739_create_api_tokens_table.php' =>
                 database_path('migrations/2018_04_18_090739_create_api_tokens_table.php'),
         ]);
-        // $this->loadMigrationsFrom(__DIR__.'/migrations');
         $router->aliasMiddleware('apitoken', 'UoGSoE\ApiTokenMiddleware\BasicApiTokenMiddleware');
         if ($this->app->runningInConsole()) {
             $this->commands([
