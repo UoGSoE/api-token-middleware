@@ -1,0 +1,34 @@
+{
+    "name": "uogsoe/basic-api-token-middleware",
+    "description": "Very basic API key middleware for Laravel",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Billy",
+            "email": "william.allan@glasgow.ac.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "UoGSoE\\ApiTokenMiddleware\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests",
+            "App\\": "src"
+        }
+    },
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "~3.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "UoGSoE\\ApiTokenMiddleware\\ApiTokenServiceProvider"
+            ]
+        }
+    }
+}
