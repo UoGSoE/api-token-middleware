@@ -83,6 +83,7 @@ class MiddlewareTest extends TestCase
     /** @test */
     public function we_can_use_multiple_api_service_tokens()
     {
+        $this->withoutExceptionHandling();
         $token1 = \App\ApiToken::createNew('test1');
         $token2 = \App\ApiToken::createNew('test2');
         $token3 = \App\ApiToken::createNew('test3');

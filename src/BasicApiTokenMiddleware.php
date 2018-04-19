@@ -39,27 +39,14 @@ class BasicApiTokenMiddleware
             return false;
         }
 
-        foreach ($services as $service) {
-            if ($this->validToken($passedToken, $service)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function validToken($token, $service)
-    {
-        $service = ApiToken::where('service', '=', $service)->first();
-        if (! $service) {
+        $apiTokens = ApiToken::whereIn('service', $services)->get();
+        if ($apiTokens->isEmpty()) {
             return false;
         }
 
-        if (! \Hash::check($token, $service->token)) {
-            return false;
-        }
-
-        return true;
+        return !is_null($apiTokens->first(function ($apiToken) use ($passedToken) {
+            return \Hash::check($passedToken, $apiToken->token);
+        }));
     }
 
     /**
