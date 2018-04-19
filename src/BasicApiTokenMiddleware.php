@@ -17,9 +17,10 @@ class BasicApiTokenMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $service)
+    public function handle($request, Closure $next)
     {
-        if (!$this->authorized($request, $service)) {
+        $services = array_except(func_get_args(), [0,1]);
+        if (!$this->authorized($request, $services)) {
             return response()->json(['message' => self::MESSAGE], self::CODE);
         }
         return $next($request);
@@ -29,21 +30,32 @@ class BasicApiTokenMiddleware
      * Checks an incoming token against one in the database
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param string $service
+     * @param array $service
      */
-    public function authorized($request, $service)
+    public function authorized($request, $services)
     {
         $passedToken = $this->extractToken($request);
         if (! $passedToken) {
             return false;
         }
 
+        foreach ($services as $service) {
+            if ($this->validToken($passedToken, $service)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function validToken($token, $service)
+    {
         $service = ApiToken::where('service', '=', $service)->first();
         if (! $service) {
             return false;
         }
 
-        if (! \Hash::check($passedToken, $service->token)) {
+        if (! \Hash::check($token, $service->token)) {
             return false;
         }
 

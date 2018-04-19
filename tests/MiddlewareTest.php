@@ -74,14 +74,30 @@ class MiddlewareTest extends TestCase
         \Route::middleware('apitoken:test')->any('/_test/', function () {
             return 'OK';
         });
-        // $response = $this->withHeaders([
-        //     'X-Header' => 'Value',
-        // ])->json('POST', '/_test', ['name' => 'Sally']);
 
-        // , [], [], ['HTTP_Authorization' => 'Bearer '.$token]
         $response = $this->withHeaders(['Authorization' => 'Bearer '.$token])->get('_test');
 
         $response->assertStatus(200);
+    }
+
+    /** @test */
+    public function we_can_use_multiple_api_service_tokens()
+    {
+        $token1 = \App\ApiToken::createNew('test1');
+        $token2 = \App\ApiToken::createNew('test2');
+        $token3 = \App\ApiToken::createNew('test3');
+        \Route::middleware('apitoken:test1,test2')->any('/_test/', function () {
+            return 'OK';
+        });
+
+        $response = $this->call('GET', '_test', ['api_token' => $token1]);
+        $response->assertStatus(200);
+
+        $response = $this->call('GET', '_test', ['api_token' => $token2]);
+        $response->assertStatus(200);
+
+        $response = $this->call('GET', '_test', ['api_token' => $token3]);
+        $response->assertStatus(401);
     }
 
     /** @test */
@@ -98,7 +114,7 @@ class MiddlewareTest extends TestCase
     }
 
     /** @test */
-    public function using_a_no_service_name_crashes()
+    public function using_no_service_name_always_returns_unauthorised()
     {
         $token = \App\ApiToken::createNew('test');
         \Route::middleware('apitoken')->any('/_test/', function () {
@@ -107,6 +123,6 @@ class MiddlewareTest extends TestCase
 
         $response = $this->call('GET', '_test', ['api_token' => $token]);
 
-        $response->assertStatus(500);
+        $response->assertStatus(401);
     }
 }

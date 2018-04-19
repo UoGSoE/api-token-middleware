@@ -62,6 +62,15 @@ $this->json('POST', 'https://my-project.test/api/hello', ['api_token' => $token]
 $this->call('POST', 'https://my-project.test/api/hello', ['api_token' => $token]);
 ```
 
+You can use multiple service token names with a route if you want to seperate your api controls too :
+```
+Route::group(['middleware' => 'apitoken:testservice,anotherservice'], function () {
+    Route::get('/hello', function () {
+        return 'hello';
+    });
+});
+```
+
 There are a few other artisan commands available to help manage the tokens :
 ```
 php artisan apitoken:list -- lists all current tokens
