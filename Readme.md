@@ -62,4 +62,9 @@ $this->json('POST', 'https://my-project.test/api/hello', ['api_token' => $token]
 $this->call('POST', 'https://my-project.test/api/hello', ['api_token' => $token]);
 ```
 
+There are a few other artisan commands available to help manage the tokens :
+```
+php artisan apitoken:list -- lists all current tokens
+php artisan apitoken:regenerate -- create a new token for a given service
+php artisan apitoken:delete -- deletes a given service token
 ```
