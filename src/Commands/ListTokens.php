@@ -2,7 +2,7 @@
 
 namespace UoGSoE\ApiTokenMiddleware\Commands;
 
-use App\ApiToken;
+use UoGSoE\ApiTokenMiddleware\ApiToken;
 use Illuminate\Console\Command;
 
 class ListTokens extends Command
