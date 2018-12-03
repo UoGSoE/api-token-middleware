@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace UoGSoE\ApiTokenMiddleware;
 
 use Illuminate\Database\Eloquent\Model;
 

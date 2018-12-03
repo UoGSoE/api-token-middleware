@@ -3,7 +3,7 @@
 namespace UoGSoE\ApiTokenMiddleware;
 
 use Closure;
-use App\ApiToken;
+use UoGSoE\ApiTokenMiddleware\ApiToken;
 
 class BasicApiTokenMiddleware
 {
